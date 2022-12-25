@@ -10,6 +10,12 @@ body {
   background-color: #fafafa;
   color: #212121;
   line-height: 1.5;
+
+  background-image: radial-gradient(#ccc 3%, transparent 5%),
+    radial-gradient(#d3d3d3 3%, transparent 5%);
+  background-size: 60px 60px;
+  background-position: 0 0, 30px 30px;
+  background-repeat: repeat;
 }
 
 #search-box {
@@ -17,4 +23,36 @@ body {
   padding: 8px;
   max-width: 320px;
   margin-bottom: 16px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.container__img {
+  height: 10%;
+  width: 10%;
+  margin-right: 10px;
+}
+
+.country-info {
+  margin-left: 20px;
+}
+
+.country-info__span {
+  font-weight: bold;
+}
+
+.country-list {
+  padding: 0;
+  margin-left: 20px;
+}
+
+.country-list__item {
+  list-style: none;
+}
+
+.input {
+  margin-left: 20px;
 }
