@@ -2,7 +2,7 @@ import '~node_modules/modern-normalize/modern-normalize.css';
 import './css/styles.css';
 import countryCard from './templates/countryTemplate.hbs';
 import countryListMarkup from './templates/countryListMarkup.hbs';
-import API from './js/fetchCountries';
+import { fetchCountry as api } from './js/fetchCountries';
 import Notiflix from 'notiflix';
 import debounce from 'lodash.debounce';
 
@@ -21,33 +21,34 @@ function onSearch() {
   if (searchCountryName === '') {
     countryList.innerHTML = '';
     countryInfo.innerHTML = '';
-
     return;
-  } else
-    API.fetchCountry(searchCountryName)
-      .then(countryNames => {
-        if (countryNames.length === 1) {
-          countryList.innerHTML = '';
-          renderCountryCard(countryNames);
-          Notiflix.Notify.success('Please see your result');
-        } else if (countryNames.length < 10 && countryNames.length > 1) {
-          countryList.innerHTML = '';
-          countryInfo.innerHTML = '';
-          renderCountryList(countryNames);
-          Notiflix.Notify.success('Please see your result');
-        } else {
-          countryList.innerHTML = '';
-          countryInfo.innerHTML = '';
-          Notiflix.Notify.info(
-            'Too many matches found. Please enter a more specific name.'
-          );
-        }
-      })
-      .catch(() => {
+  }
+
+  api(searchCountryName)
+    .then(countryNames => {
+      if (countryNames.length === 1) {
         countryList.innerHTML = '';
+        renderCountryCard(countryNames);
+        Notiflix.Notify.success('Please see your result');
+        return;
+      }
+      if (countryNames.length < 10 && countryNames.length > 1) {
         countryInfo.innerHTML = '';
-        Notiflix.Notify.failure('Oops, there is no country with that name.');
-      });
+        renderCountryList(countryNames);
+        Notiflix.Notify.success('Please see your result');
+        return;
+      }
+      countryList.innerHTML = '';
+      countryInfo.innerHTML = '';
+      Notiflix.Notify.info(
+        'Too many matches found. Please enter a more specific name.'
+      );
+    })
+    .catch(error => {
+      countryList.innerHTML = '';
+      countryInfo.innerHTML = '';
+      Notiflix.Notify.failure(error);
+    });
 }
 
 function renderCountryCard(country) {
