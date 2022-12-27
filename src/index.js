@@ -58,7 +58,6 @@ function renderCountryCard(country) {
 
 function renderCountryList(country) {
   const renderList = country.map(c => [c.name.official, c.flags.svg]);
-  console.log(renderList);
   const markup = countryListMarkup(renderList);
   countryList.innerHTML = markup;
 }
